@@ -9,7 +9,6 @@ const router = createBrowserRouter([
     {
         path: "/",
         element:<DefaultLayout />,
-      errorElement:<NotFound />,
         children:[
             {
                 path: "/",
@@ -23,10 +22,7 @@ const router = createBrowserRouter([
             path: "/users",
             element: <Users />,
           },
-          {
-            path: "*",
-            element: <NotFound />,
-          }
+     
         ]
         
       },
@@ -35,7 +31,6 @@ const router = createBrowserRouter([
     
     path: "/",
     element:<GuestLayout />,
-    errorElement:<NotFound />,
     children:[
         {
             path: "/",
@@ -49,14 +44,14 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
-      {
-        path: "*",
-        element: <NotFound />,
-      }
+    
     ]
     
   },
-
+  {
+    path: "*",
+    element: <NotFound />,
+  }
  
 ]);
 

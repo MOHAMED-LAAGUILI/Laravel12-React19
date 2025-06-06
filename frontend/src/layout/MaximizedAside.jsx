@@ -5,7 +5,7 @@ export default function MaximizedAside({
   sectionTitleVisible, openDropdown, twMerge, ChevronDown, setOpenDropdown,
   X, profileMenuRef, profileRef, setIsProfileOpen, isProfileOpen, route,
   AppName, AppVersion, profileMenuItems, ChevronLeft, setIsMinimized,
-  PanelRightOpen, userImage, currentUser
+  PanelRightOpen, userImage, currentUser, setUser, setToken
 }) {
 
   return (
@@ -61,11 +61,11 @@ export default function MaximizedAside({
             />
             <div className="flex flex-col flex-1 min-w-0 text-left">
               <span className="font-semibold text-base text-gray-900 dark:text-white truncate">
-                {currentUser?.username.charAt(0).toUpperCase() + currentUser?.username.slice(1) || currentUser?.username.charAt(0).toUpperCase() + currentUser?.username.slice(1) }
+                {currentUser?.username || "" }
               </span>
               
               <span className="text-xs text-gray-400 dark:text-gray-300 truncate">
-              ID: {currentUser?.id}
+              ID: {currentUser?.id || ""}
               </span>
           
             </div>
@@ -89,6 +89,9 @@ export default function MaximizedAside({
                       className={`w-48 text-left px-2 mx-3 py-2 flex items-center rounded-md ${item.textClass} ${item.hoverClass} transition`}
                       onClick={(e) => {
                         e.preventDefault();
+                        setUser(null);
+                        setToken(null)
+                        
 
                       }}
                     >

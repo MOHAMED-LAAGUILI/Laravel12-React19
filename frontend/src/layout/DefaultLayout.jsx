@@ -298,10 +298,12 @@ export default function DefaultLayout() {
 
   const Aside = isMinimized ? MinimizedAside : MaximizedAside;
 
-  
-  if (!user && !token ) {
-    navigate("/login");
-  }
+  React.useEffect(() => {
+    if (!user && !token) {
+      navigate("/login");
+    }
+  }, [user, token, navigate]);
+
   return (
     <div className={"bg-light text-dark dark:bg-dark dark:text-light"}>
       <SEO {...seoProps} />
