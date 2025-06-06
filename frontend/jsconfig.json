@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".", // Root base for path resolution
+    "paths": {
+      "@/*": ["src/*"],
+      "@Src/*": ["src/*"],
+      "@Assets/*": ["src/assets/*"],
+      "@Components/*": ["src/components/*"],
+      "@Layout/*": ["src/layout/*"],
+      "@Locales/*": ["src/locales/*"],
+      "@Pages/*": ["src/pages/*"],
+      "@Public/*": ["public/*"],
+      "@Router/*": ["src/router/*"],
+      "@Context/*": ["src/context/*"],
+      "@Lib/*": ["src/lib/*"]
+    },
+    "jsx": "react-jsx"
+  },
+  "include": ["src", "src/components/Editors/Kanban/data/.jsx"],
+  "exclude": ["node_modules", "dist", "dev"]
+}

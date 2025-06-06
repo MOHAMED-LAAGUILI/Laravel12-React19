@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Metrophobic&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+*,
+body {
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+  font-family: "Inter","Metrophobic", system-ui, Arial, sans-serif !important;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5;
+  font-size: 12px;
+
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+/* Thin scrollbar for tables */
+.thin-scrollbar::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border-radius: 4px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* For Firefox */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #0F172B #d8d8d8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0F172B;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0F172B;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #0F172B;
+}
+
+::-webkit-scrollbar-track {
+  background: #d8d8d8;
+}
+
+::-webkit-scrollbar-corner {
+  background: #0F172B;
+}
+
+
