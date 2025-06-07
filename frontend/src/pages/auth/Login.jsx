@@ -6,7 +6,6 @@ import { Lock, MailOpen } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import { Input } from "@Components/Core/Inputs/CoreInput"
-import FloatingPaths from "@Components/FloatingPaths"
 import axiosClient from "@/constants/axios-client"
 import { useStateContext } from "@/context/ContextProvider"
 
@@ -216,13 +215,8 @@ export default function Login() {
   }
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-transparent dark:bg-neutral-950">
-      {/* Background */}
-      <div className="absolute inset-0">
-        <FloatingPaths position={-3} />
-      </div>
+ 
 
-      {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -302,6 +296,5 @@ export default function Login() {
           </div>
         </motion.div>
       </div>
-    </div>
   )
 }

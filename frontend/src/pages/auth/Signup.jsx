@@ -6,7 +6,6 @@ import { Lock, MailOpen, User } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import { Input } from "@Components/Core/Inputs/CoreInput"
-import FloatingPaths from "@Components/FloatingPaths"
 import axiosClient from "@/constants/axios-client"
 
 // Form fields configuration
@@ -235,13 +234,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center bg-transparent dark:bg-neutral-950 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0">
-        <FloatingPaths position={-3} />
-      </div>
-
-      {/* Main Content */}
+ 
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -306,6 +299,5 @@ export default function Signup() {
           </div>
         </motion.div>
       </div>
-    </div>
   )
 }
