@@ -56,11 +56,8 @@ import { cn } from "@/lib/utils";
 import { useStateContext } from "@Context/ContextProvider";
 
 export default function DefaultLayout() {
+  // User
   const { user, token, setUser, setToken } = useStateContext();
-
-
- 
-
   const navigate = useNavigate();
 
   // States
@@ -73,7 +70,6 @@ export default function DefaultLayout() {
   const [language, setLanguage] = useState(getInitialLanguage());
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
   const [visible, setVisible] = useState(false);
   const [isMinimized, setIsMinimized] = useState(() => {
     const savedState = localStorage.getItem("asideState");
@@ -83,11 +79,7 @@ export default function DefaultLayout() {
   const [isHoveringPopup, setIsHoveringPopup] = useState(false);
   const location = useLocation();
   const langDropdownRef = useRef(null);
-  const formattedTime = currentTime.toLocaleTimeString();
-  const now = new Date();
-  const day = String(now.getDate()).padStart(2, "0");
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const year = now.getFullYear();
+  
   const profileRef = useRef(null);
   const profileMenuRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -96,7 +88,6 @@ export default function DefaultLayout() {
   const development = import.meta.env.VITE_ENVIRONMENT === "development";
   const AppName = development ? "Inpact" : __APP_NAME__;
   const AppLogo = !development && "/images/vite.ico";
-  const AppVersion = !development && __APP_VERSION__;
   const itemRefs = useRef({});
   const popupRef = useRef(null);
   const hoverTimeoutRef = useRef(null);
@@ -128,9 +119,7 @@ export default function DefaultLayout() {
     if (main) scrollContainerRef.current = main;
     else scrollContainerRef.current = window;
 
-    const interval = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+    
 
     const handleClickOutside = (event) => {
       if (
@@ -161,7 +150,6 @@ export default function DefaultLayout() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      clearInterval(interval);
     };
   }, [i18n, isProfileOpen, pageName, AppName, t]);
 
@@ -195,7 +183,6 @@ export default function DefaultLayout() {
   const asideProps = {
     AppName,
     AppLogo,
-    AppVersion,
     openDropdown,
     setOpenDropdown,
     motion,
@@ -280,11 +267,6 @@ export default function DefaultLayout() {
   };
   const footerProps = {
     AppName,
-    formattedTime,
-    development,
-    day,
-    month,
-    year,
   };
   const backToTopProps = {
     handleClick: handleScroll2Top,

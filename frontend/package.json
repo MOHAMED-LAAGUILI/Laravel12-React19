@@ -23,6 +23,7 @@
     "react-i18next": "^15.5.2",
     "react-router-dom": "^7.6.2",
     "react-typed": "^2.0.12",
+    "swr": "^2.3.3",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7",
     "vite-plugin-compression": "^0.5.1",

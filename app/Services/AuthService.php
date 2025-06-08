@@ -7,7 +7,9 @@ use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
-    public function signup(array $data): User
+
+     
+    public function create(array $data): User
     {
         return User::create([
             'username'    => $data['username'],

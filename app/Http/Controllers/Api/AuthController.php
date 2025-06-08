@@ -19,15 +19,32 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
+    public function users(Request $request)
+    {
+   // Optional: allow client to pass ?per_page=XX
+   $perPage = $request->get('per_page', 10); // default 10 users per page
+
+   return response()->json(
+       User::orderBy('id', 'asc')->paginate($perPage)
+   );
+    }
+
+    public function create(Request $request)
+    {
+        $user = $this->authService->create($request->validated());
+
+        return response()->json([
+            'message' => 'User created successfully.',
+        ], 201);
+    }
+    
     public function signup(SignupRequest $request): JsonResponse
     {
-        $user = $this->authService->signup($request->validated());
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $user = $this->authService->create($request->validated());
 
         return response()->json([
             'message' => 'User registered successfully.',
             'user'    => new UserResource($user),
-            'token'   => $token,
         ], 201);
     }
 

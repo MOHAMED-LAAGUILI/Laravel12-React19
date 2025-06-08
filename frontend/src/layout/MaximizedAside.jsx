@@ -4,7 +4,7 @@ export default function MaximizedAside({
   isSidebarOpen, setIsSidebarOpen, asideMenuItems, translator, Link,
   sectionTitleVisible, openDropdown, twMerge, ChevronDown, setOpenDropdown,
   X, profileMenuRef, profileRef, setIsProfileOpen, isProfileOpen, route,
-  AppName, AppVersion, profileMenuItems, ChevronLeft, setIsMinimized,
+  AppName, profileMenuItems, ChevronLeft, setIsMinimized,
   PanelRightOpen, userImage, currentUser, setUser, setToken
 }) {
 
@@ -32,9 +32,7 @@ export default function MaximizedAside({
             <span className="text-3xl  text-gray-600 dark:text-white tracking-tight font-semibold ">
             {`${AppName.charAt(0).toUpperCase()}${AppName.slice(1)}`}
             </span>
-            <span className="text-xs text-gray-400 dark:text-gray-300 font-semibold uppercase tracking-wide mt-4 mb-2 px-2">
-              {AppVersion}
-            </span>
+          
           </Link>
           <button
             className="ml-auto lg:hidden text-gray-400 hover:text-gray-700 dark:hover:text-white transition"

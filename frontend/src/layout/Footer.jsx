@@ -1,5 +1,5 @@
 function Footer({
-  formattedTime, day, month, year, AppName, development
+  AppName
 }) {
  
 
@@ -12,13 +12,7 @@ function Footer({
           <p className=" text-dark dark:text-light">{AppName.toUpperCase()}</p>
         </div>
 
-        {!development && (
-          <div className="flex gap-4">
-            <p className="text-sm text-dark dark:text-light ">
-              since 2024 to {day}/{month}/{year} {formattedTime}
-            </p>
-          </div>
-        )}
+        
       </div>
     </footer>
   );
