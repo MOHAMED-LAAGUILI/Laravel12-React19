@@ -26,7 +26,9 @@ export default defineConfig(({ mode }) => {
     cacheDir: "node_modules/.vite_cache",
     build: {
       target: "esnext",
-      polyfillModulePreload: false,
+      modulePreload :{
+        polyfill: false,  
+      },
       outDir: "dist",
       cssCodeSplit: true,
       manifest: true,

@@ -19,6 +19,26 @@ class AuthService
             'updated_at'  => now(),
         ]);
     }
+    
+    public function update(array $data, $id): User
+    {
+        $user = User::findOrFail($id);
+
+        $user->update([
+            'username'    => $data['username'],
+            'email'       => $data['email'],
+            'password'    => bcrypt($data['password']),
+            'updated_at'  => now(),
+        ]);
+
+        return $user;
+    }
+
+    public function delete($id): void
+    {
+        User::findOrFail($id)->delete();
+    }
+    
 
     /**
      * Attempt login and return [user, token].

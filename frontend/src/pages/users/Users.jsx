@@ -1,42 +1,68 @@
-import useSWR from 'swr'
 import { useState } from 'react'
-import axiosClient from '@/constants/axios-client'
+import useApiSWR from '@/hooks/useApiSWR'
+import UserActions from '@/components/UserActions' // Import the actions component
+import axiosClient from '@/hooks/axios-client'
 import Modal from '@/components/Core/Modals/Modal'
 import CoreButton from '@/components/Core/Buttons/CoreButton'
 import { Input } from '@/components/Core/Inputs/CoreInput'
-import { LockIcon, MailOpen, UserIcon } from 'lucide-react'
+import {  LockIcon, MailOpen, PlusIcon, UserIcon, UsersIcon } from 'lucide-react'
 import toast from 'react-hot-toast'
-
-const fetcher = (url) => axiosClient.get(url).then(res => res.data)
+import BodyCard from '@/components/BodyCard'
+import CoreBadge from '@/components/Core/Badges/CoreBadge'
 
 export default function Users() {
+
+
+
+
   const [page, setPage] = useState(1)
   const [isModalOpen, setModalOpen] = useState(false)
   const [formData, setFormData] = useState({ username: '', email: '', password: '', password_confirmation: '' })
   const [formError, setFormError] = useState([])
 
-  const { data, error, isLoading, mutate } = useSWR(`/users?page=${page}`, fetcher, {
-    revalidateOnFocus: false,
-    dedupingInterval: 60000,
-  })
+  // Use global SWR hook
+  const { data, error, isLoading, mutate } = useApiSWR(`/users?page=${page}`);
 
-  const meta = data
+  // Pagination meta
+  const meta = data && data.meta
     ? {
-        currentPage: data.current_page,
-        lastPage: data.last_page,
-        nextPage: data.current_page < data.last_page ? data.current_page + 1 : null,
-        prevPage: data.current_page > 1 ? data.current_page - 1 : null,
+        currentPage: data.meta.current_page,
+        lastPage: data.meta.last_page,
+        nextPage: data.meta.current_page < data.meta.last_page ? data.meta.current_page + 1 : null,
+        prevPage: data.meta.current_page > 1 ? data.meta.current_page - 1 : null,
       }
-    : null
+    : null;
 
   const users = data?.data || []
 
-  const openModal = () => {
-    setFormData({ username: '', email: '', password: '' })
-    setModalOpen(true)
-  }
+  const [isEdit, setIsEdit] = useState(false);
+  const [editingUserId, setEditingUserId] = useState(null);
 
-  const closeModal = () => setModalOpen(false)
+  const openModal = () => {
+    setFormData({ username: '', email: '', password: '' });
+    setIsEdit(false);
+    setEditingUserId(null);
+    setModalOpen(true);
+  };
+
+  const openEditModal = (user) => {
+    setFormData({
+      username: user.username,
+      email: user.email,
+      password: '',
+    });
+    setIsEdit(true);
+    setEditingUserId(user.id);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setIsEdit(false);
+    setEditingUserId(null);
+    setFormError([]);
+    setFormData({ username: '', email: '', password: '' });
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -63,41 +89,79 @@ export default function Users() {
     }
   }
 
+  const handleUpdateUser = async () => {
+    setFormError(null);
+    try {
+      await axiosClient.put(`/user/${editingUserId}`, formData);
+      await mutate();
+      toast.success('User updated successfully');
+      closeModal();
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'Update failed';
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleDeleteUser = async (user) => {
+    if (!window.confirm(`Are you sure you want to delete user '${user.username}'?`)) return;
+    try {
+      await axiosClient.delete(`/user/${user.id}`)
+      // Refresh user list after deletion
+      await mutate()
+      toast.success("User deleted successfully")
+    } catch (err) {
+      toast.error(`Failed to delete user ${err}`)
+    }
+  }
+
   if (error) {
     return <div className="text-red-600 p-4">Failed to load users.</div>
   }
 
+  const tableHeaders = [
+    "ID",
+    "Username",
+    "Email",
+    "Verified",
+    "Created At",
+    "Updated At",
+    "Actions",
+  ];
+  
+  
+  
+  
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Users</h2>
-        <CoreButton
+    <BodyCard  title="Users" icon={<UsersIcon size={15}/> }  action={
+      <CoreButton
           onClick={openModal}
           variant='soft'
           color='primary'
+          icon={<PlusIcon size={15}/>}
           
         >
           Create User
         </CoreButton>
-      </div>
+    }>
+    <div className="space-y-4">
+     
 
       <div className="overflow-x-auto rounded-md border border-gray-200 dark:border-gray-700 shadow-sm">
         <table className="min-w-full text-sm text-left text-gray-700 dark:text-gray-300">
           <thead className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-b dark:border-gray-700">
             <tr>
-              <th className="px-4 py-3">ID</th>
-              <th className="px-4 py-3">Username</th>
-              <th className="px-4 py-3">Email</th>
-              <th className="px-4 py-3">Verified</th>
-              <th className="px-4 py-3">Created At</th>
-              <th className="px-4 py-3">Updated At</th>
+              {tableHeaders.map((header) => (
+                <th key={header} className="px-4 py-3">
+                  {header}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
             {isLoading ? (
               <tr>
                 <td colSpan={6} className="text-center px-4 py-3">
-                  <div className="flex items-center justify-center">
+                  <div className="flex text-center items-center justify-center">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900 dark:border-white"></div>
                     <span className="ml-2">Loading...</span>
                   </div>
@@ -114,17 +178,20 @@ export default function Users() {
                   <td className="px-4 py-2">{user.email}</td>
                   <td className="px-4 py-2">
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                        user.email_verified_at
-                          ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
-                          : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
-                      }`}
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium `}
                     >
-                      {user.email_verified_at ? 'Yes' : 'No'}
+                      {user.email_verified_at ? <CoreBadge color="green" variant="outline">Yes</CoreBadge> : <CoreBadge color="red" variant="outline">No</CoreBadge>}
                     </span>
                   </td>
                   <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString()}</td>
                   <td className="px-4 py-2">{new Date(user.updated_at).toLocaleDateString()}</td>
+                  <td className="px-4 py-2">
+                    <UserActions
+                      user={user}
+                      onEdit={openEditModal}
+                      onDelete={handleDeleteUser}
+                    />
+                  </td>
                 </tr>
               ))
             ) : (
@@ -164,14 +231,11 @@ export default function Users() {
       <Modal
       isOpen={isModalOpen}
       onClose={closeModal}
-      onConfirm={handleCreateUser}
-      title="Create New User"
-      btnMessage="Create"
-      variant="drawer"
-      >
-        
-      
-        
+      onConfirm={isEdit ? handleUpdateUser : handleCreateUser}
+      title={isEdit ? 'Edit User' : 'Create New User'}
+      btnMessage={isEdit ? 'Update' : 'Create'}
+      variant="modal"
+      > 
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
 
 
@@ -233,6 +297,9 @@ export default function Users() {
        
           </div>
         </Modal>
+
+        {JSON.stringify(data,null,2)}
         </div>
+        </BodyCard>
   )
 }

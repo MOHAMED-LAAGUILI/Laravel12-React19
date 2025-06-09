@@ -124,7 +124,7 @@ export default function NotFound() {
   }
 
   return (
-    <div className="relative min-h-[87vh] w-full flex items-center justify-center overflow-hidden bg-white dark:bg-neutral-950">
+    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white dark:bg-neutral-950">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl" />

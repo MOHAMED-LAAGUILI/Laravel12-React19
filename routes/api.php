@@ -19,10 +19,7 @@ Route::post('register', [AuthController::class, 'signup'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
 Route::get('users', [AuthController::class, 'users'])->name('users');
+Route::put('user/{id}', [AuthController::class, 'updateUser'])->name('updateUser');
+Route::delete('user/{id}', [AuthController::class, 'deleteUser'])->name('deleteUser');
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-});
+

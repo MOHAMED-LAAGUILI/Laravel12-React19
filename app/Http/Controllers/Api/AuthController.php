@@ -24,7 +24,7 @@ class AuthController extends Controller
    // Optional: allow client to pass ?per_page=XX
    $perPage = $request->get('per_page', 10); // default 10 users per page
 
-   return response()->json(
+   return UserResource::collection(
        User::orderBy('id', 'asc')->paginate($perPage)
    );
     }
@@ -36,6 +36,25 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'User created successfully.',
         ], 201);
+    }
+    
+    public function updateUser(Request $request, $id)
+    {
+        $user = $this->authService->update($request->all(), $id);
+
+        return response()->json([
+            'message' => 'User updated successfully.',
+            'user'    => new UserResource($user),
+        ], 200);
+    }
+    
+    public function deleteUser($id)
+    {
+        $user = $this->authService->delete($id);
+
+        return response()->json([
+            'message' => 'User deleted successfully.',
+        ], 200);
     }
     
     public function signup(SignupRequest $request): JsonResponse

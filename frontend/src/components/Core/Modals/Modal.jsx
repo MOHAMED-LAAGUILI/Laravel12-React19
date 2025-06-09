@@ -89,18 +89,7 @@ export default function Modal({
             style={isDrawer ? { height: "100vh", right: 0, top: 0, position: "fixed", ...customStyle } : customStyle}
             {...rest}
           >
-            {/* Close Button */}
-            <CoreButton
-              color="red"
-              variant="soft"
-              size="sm"
-              rounded="rounded-[3px]"
-              className="absolute top-3 right-3 text-red-400 hover:text-red-700 p-1 rounded-lg hover:bg-red-100 border border-red-300 transition-colors !pe-0 !ps-2"
-              aria-label="Close modal"
-              onClick={onClose}
-              icon={<X size={18} />}
-              title="Close modal"
-            />
+         
 
             {/* Title */}
             {title && (

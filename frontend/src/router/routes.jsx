@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
 import GuestLayout from "@Layout/GuestLayout";
-import Users from "@Pages/Users";
+import Users from "@/pages/users/Users";
 import DefaultLayout from "@Layout/DefaultLayout";
 import NotFound from "@/components/NotFound404/Notfound";
 const router = createBrowserRouter([

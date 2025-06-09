@@ -6,7 +6,7 @@ import { Lock, MailOpen, User } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import { Input } from "@Components/Core/Inputs/CoreInput"
-import axiosClient from "@/constants/axios-client"
+import axiosClient from "@/hooks/axios-client"
 
 // Form fields configuration
 const FORM_FIELDS = [
