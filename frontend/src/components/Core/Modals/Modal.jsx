@@ -17,6 +17,7 @@ export default function Modal({
   variant = "modal", // 'modal' or 'drawer'
   size = "normal",   // 'small', 'normal', 'medium', 'large', etc.
   showActions = true,
+  isLoading = false,
   ...rest
 }) {
   const isDrawer = variant === "drawer";
@@ -119,8 +120,9 @@ export default function Modal({
                   Annuler
                 </CoreButton>
                 <CoreButton
-                  color="green"
-                  variant="soft"
+                disabled={isLoading}
+                  color={isLoading ? "dark" : "green"}
+                  variant={isLoading ? "soft" : "soft"}
                   onClick={onConfirm}
                   title={btnMessage}
                   icon={<Check size={15} />}

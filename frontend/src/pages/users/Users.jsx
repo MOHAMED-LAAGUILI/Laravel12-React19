@@ -14,6 +14,7 @@ import CoreBadge from '@/components/Core/Badges/CoreBadge';
 
 export default function Users() {
   const [search, setSearch] = useState('');
+  const [isItLoading, setIsItLoading] = useState(false);
   const [emailVerified, setEmailVerified] = useState('');
   const [page, setPage] = useState(1);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -34,7 +35,7 @@ export default function Users() {
     password_confirmation: ''
   });
 
-  
+
   const { data, error, isLoading, mutate } = useApiSWR(swrKey);
   const users = data?.data || [];
 
@@ -86,6 +87,7 @@ export default function Users() {
 
   const handleCreateUser = async () => {
     setFormError(null);
+    setIsItLoading(true);
     try {
       await axiosClient.post('/register', formData);
       await mutate();
@@ -99,11 +101,14 @@ export default function Users() {
       } else {
         setFormError({ general: [errorMessage] });
       }
+    }finally{
+      setIsItLoading(false);
     }
   };
 
   const handleUpdateUser = async () => {
     setFormError(null);
+    setIsItLoading(true);
     try {
       await axiosClient.put(`/user/${editingUserId}`, formData);
       await mutate();
@@ -112,17 +117,22 @@ export default function Users() {
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'Update failed';
       toast.error(errorMessage);
+    }finally{
+      setIsItLoading(false);
     }
   };
 
   const handleDeleteUser = async () => {
     try {
+      setIsItLoading(true);
       await axiosClient.delete(`/user/${userToDelete.id}`);
       await mutate();
       setIsDeleteModalOpen(false);
       toast.success("User deleted successfully");
     } catch (err) {
       toast.error(`Failed to delete user: ${err}`);
+    }finally{
+      setIsItLoading(false);
     }
   };
 
@@ -238,8 +248,9 @@ export default function Users() {
         onClose={closeModal}
         onConfirm={isEdit ? handleUpdateUser : handleCreateUser}
         title={isEdit ? 'Edit User' : 'Create New User'}
-        btnMessage={isEdit ? 'Update' : 'Create'}
+        btnMessage={isEdit ? (isItLoading ? 'Updating...' : 'Update') : (isItLoading ? 'Creating...' : 'Create')}
         variant="modal"
+        isLoading={isItLoading}
       >
         <div className="space-y-4">
           <Input leftIcon={<UserIcon size={15} />} type="text" name="username" placeholder="Username" value={formData.username} onChange={handleInputChange} />
@@ -262,8 +273,9 @@ export default function Users() {
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleDeleteUser}
         title={'Delete User'}
-        btnMessage={'Delete'}
+        btnMessage={isItLoading ? 'Deleting...' : 'Delete'}
         variant="modal"
+        isLoading={isItLoading}
         message="Are you sure you want to delete this user?"
       />
       <br />
