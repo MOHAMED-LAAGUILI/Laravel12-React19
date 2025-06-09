@@ -21,12 +21,29 @@ class AuthController extends Controller
 
     public function users(Request $request)
     {
-   // Optional: allow client to pass ?per_page=XX
-   $perPage = $request->get('per_page', 10); // default 10 users per page
+        $query = User::query();
 
-   return UserResource::collection(
-       User::orderBy('id', 'asc')->paginate($perPage)
-   );
+        // Search by username or email
+        if ($search = $request->get('search')) {
+            $query->where(function($q) use ($search) {
+                $q->where('username', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by email_verified (1 = verified, 0 = unverified)
+        if ($request->has('email_verified') && $request->get('email_verified') !== '') {
+            if ($request->get('email_verified')) {
+                $query->whereNotNull('email_verified_at');
+            } else {
+                $query->whereNull('email_verified_at');
+            }
+        }
+
+        $perPage = $request->get('per_page', 10); // default 10 users per page
+        return UserResource::collection(
+            $query->orderBy('id', 'asc')->paginate($perPage)
+        );
     }
 
     public function create(Request $request)

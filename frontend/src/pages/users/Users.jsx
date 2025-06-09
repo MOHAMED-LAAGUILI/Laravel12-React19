@@ -11,6 +11,9 @@ import BodyCard from '@/components/BodyCard'
 import CoreBadge from '@/components/Core/Badges/CoreBadge'
 
 export default function Users() {
+  // Search and filter state
+  const [search, setSearch] = useState('');
+  const [emailVerified, setEmailVerified] = useState('');
 
 
 
@@ -20,8 +23,15 @@ export default function Users() {
   const [formData, setFormData] = useState({ username: '', email: '', password: '', password_confirmation: '' })
   const [formError, setFormError] = useState([])
 
+  // Build query params for SWR
+  const params = new URLSearchParams();
+  if (search) params.append('search', search);
+  if (emailVerified !== '') params.append('email_verified', emailVerified);
+  params.append('page', page);
+  const swrKey = `/users?${params.toString()}`;
+
   // Use global SWR hook
-  const { data, error, isLoading, mutate } = useApiSWR(`/users?page=${page}`);
+  const { data, error, isLoading, mutate } = useApiSWR(swrKey);
 
   // Pagination meta
   const meta = data && data.meta
@@ -138,11 +148,29 @@ export default function Users() {
           variant='soft'
           color='primary'
           icon={<PlusIcon size={15}/>}
-          
         >
           Create User
         </CoreButton>
     }>
+      {/* Search & Filter UI */}
+      <div className="flex flex-wrap gap-2 mb-4 items-center">
+        <input
+          type="text"
+          placeholder="Search users..."
+          value={search}
+          onChange={e => { setSearch(e.target.value); setPage(1); }}
+          className="input input-bordered px-2 py-1 rounded border border-gray-300 dark:bg-gray-900 dark:text-white"
+        />
+        <select
+          value={emailVerified}
+          onChange={e => { setEmailVerified(e.target.value); setPage(1); }}
+          className="select px-2 py-1 rounded border border-gray-300 dark:bg-gray-900 dark:text-white"
+        >
+          <option value="">All</option>
+          <option value="1">Verified</option>
+          <option value="0">Unverified</option>
+        </select>
+      </div>
     <div className="space-y-4">
      
 

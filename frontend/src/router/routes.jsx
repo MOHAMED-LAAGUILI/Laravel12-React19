@@ -5,6 +5,7 @@ import GuestLayout from "@Layout/GuestLayout";
 import Users from "@/pages/users/Users";
 import DefaultLayout from "@Layout/DefaultLayout";
 import NotFound from "@/components/NotFound404/Notfound";
+import Dashboard from "@/pages/users/Dashboard";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/dashboard",
-                element: <div>dashboard</div>,
+                element: <Dashboard />,
             },
           {
             path: "/users",
