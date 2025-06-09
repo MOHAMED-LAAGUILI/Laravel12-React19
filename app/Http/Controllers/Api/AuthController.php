@@ -41,9 +41,16 @@ class AuthController extends Controller
         }
 
         $perPage = $request->get('per_page', 10); // default 10 users per page
-        return UserResource::collection(
-            $query->orderBy('id', 'asc')->paginate($perPage)
-        );
+        $users = $query->orderBy('id', 'asc')->paginate($perPage);
+
+        return response()->json([
+            'data' => UserResource::collection($users->items()),
+            'meta' => [
+                'current_page' => $users->currentPage(),
+                'last_page' => $users->lastPage(),
+                'total' => $users->total(),
+            ],
+        ]);
     }
 
     public function create(Request $request)

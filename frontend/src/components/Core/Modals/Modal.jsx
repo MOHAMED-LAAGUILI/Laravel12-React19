@@ -104,7 +104,7 @@ export default function Modal({
             )}
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto min-h-0">{children}</div>
+            <div className="flex-1 overflow-y-auto min-h-0 text-gray-800 dark:text-gray-200">{children}</div>
 
             {/* Action Buttons */}
             {showActions && (

@@ -1,29 +1,35 @@
 import { MetricCard } from "./MetricCard";
+import useApiSWR from '@/hooks/useApiSWR';
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
-
+        const { t } = useTranslation();
+  // Fetch users data
+  const { data, isLoading } = useApiSWR('/users');
+  const usersCount = data?.meta?.total || 0;
 
   const metrics = [
     {
-      title: 'Matériel',
-      value: '27',
-      subtitle: 'Articles en stock',
-      percentage: '+8%',
+      title: t('Users'),
+      value: isLoading ? '...' : usersCount,
+      subtitle: t('Total users'),
+      percentage: '+0%', // You can adjust this if you compute trends
       trend: 'up',
       color: 'blue',
     },
+   
     {
-      title: 'Interventions',
+      title: t('Interventions'),
       value: '5',
-      subtitle: 'Demandes traitées',
+      subtitle: t('Demandes traitées'),
       percentage: '+2%',
       trend: 'up',
       color: 'orange',
     },
     {
-      title: 'Mouvements',
+      title: t('Movements'),
       value: '7',
-      subtitle: 'Transactions enregistrées',
+      subtitle: t('Transactions enregistrées'),
       percentage: '+0%',
       trend: 'neutral',
       color: 'pink',
@@ -32,13 +38,13 @@ export default function Dashboard() {
 
   return (
     <div>
-        
-              {/* Metrics cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {metrics.map((metric, index) => (
-            <MetricCard key={index} {...metric} />
-          ))}
-        </div>
+      {/* Metrics cards */}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {metrics.map((metric, index) => (
+          <MetricCard key={index} {...metric} />
+        ))}
+      </div>
     </div>
   )
 }
