@@ -14,7 +14,7 @@ const baseMenuConfig = [
   {
     title: "Admin",
     icon: <ShieldAlert size={15} />,
-    items: ["Users","Roles","Permissions"],
+    items: ["Users","Permissions","Roles"],
   },
   
 

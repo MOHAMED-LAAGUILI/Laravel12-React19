@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useApiSWR from '@/hooks/useApiSWR';
-import UserActions from '@/components/UserActions';
+import Actions from '@/components/Actions';
 import axiosClient from '@/hooks/axios-client';
 import Modal from '@/components/Core/Modals/Modal';
 import CoreButton from '@/components/Core/Buttons/CoreButton';
@@ -91,6 +91,7 @@ export default function Users() {
     try {
       await axiosClient.post('/register', formData);
       await mutate();
+      toast.success("User created successfully");
       setModalOpen(false);
     } catch (err) {
       const errorMessage = err.response?.data?.message || "Registration failed";
@@ -203,8 +204,8 @@ export default function Users() {
                   <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString()}</td>
                   <td className="px-4 py-2">{new Date(user.updated_at).toLocaleDateString()}</td>
                   <td className="px-4 py-2">
-                    <UserActions
-                      user={user}
+                    <Actions
+                      data={user}
                       onEdit={openEditModal}
                       onDelete={() => openDeleteModal(user)} // Pass user
                     />

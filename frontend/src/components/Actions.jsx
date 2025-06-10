@@ -1,13 +1,13 @@
 import CoreButton from '@/components/Core/Buttons/CoreButton';
 import { Pencil, Trash } from 'lucide-react';
-export default function UserActions({ user, onEdit, onDelete }) {
+export default function Actions({ data, onEdit, onDelete }) {
   return (
     <div className="flex gap-2">
       <CoreButton
         size="sm"
         variant="soft"
         color="primary"
-        onClick={() => onEdit(user)}
+        onClick={() => onEdit(data)}
         title="Edit user"
       >
         <Pencil size={15}/>
@@ -16,8 +16,10 @@ export default function UserActions({ user, onEdit, onDelete }) {
         size="sm"
         variant="soft"
         color="red"
-        onClick={() => onDelete(user)}
+        onClick={() => onDelete(data)}
         title="Delete user"
+        className=""
+        
       >
         <Trash size={15}/>
       </CoreButton>
